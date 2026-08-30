@@ -6,7 +6,10 @@ from fastapi import FastAPI, HTTPException, UploadFile
 from PIL import Image
 from torchvision import transforms
 
-from model import get_model
+try:
+    from .model import get_model
+except ImportError:  # pragma: no cover
+    from model import get_model
 
 
 MODEL_PATH = Path("artifacts/checkpoints/model.pt")
