@@ -2,7 +2,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: pytorch-serving-hpa
-  namespace: mlops-pytorch
+  namespace: ml-training
 spec:
   scaleTargetRef:
     apiVersion: apps/v1

@@ -1,4 +1,5 @@
 import io
+import os
 from pathlib import Path
 
 import torch
@@ -12,7 +13,11 @@ except ImportError:  # pragma: no cover
     from model import get_model
 
 
-MODEL_PATH = Path("artifacts/checkpoints/model.pt")
+MODEL_PATH = Path(os.getenv("MODEL_PATH", "/app/model.pt"))
+if not MODEL_PATH.exists():
+    fallback = Path("artifacts/model.pt")
+    MODEL_PATH = fallback if fallback.exists() else MODEL_PATH
+
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 app = FastAPI()
 model = None
