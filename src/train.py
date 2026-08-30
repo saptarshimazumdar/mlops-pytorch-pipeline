@@ -12,7 +12,27 @@ from model import get_model
 
 def load_config(config_path: str) -> dict:
     with open(config_path) as f:
-        return yaml.safe_load(f)
+        config = yaml.safe_load(f) or {}
+
+    config.setdefault("model", {})
+    config["model"].setdefault("architecture", config.get("model_architecture", "resnet18"))
+    config["model"].setdefault("num_classes", config.get("num_classes", 10))
+
+    config.setdefault("data", {})
+    config["data"].setdefault("data_dir", config.get("data_dir", "./data"))
+
+    config.setdefault("training", {})
+    config["training"].setdefault("batch_size", config.get("batch_size", 64))
+    config["training"].setdefault("epochs", config.get("epochs", 10))
+    config["training"].setdefault("learning_rate", config.get("learning_rate", 1e-3))
+    config["training"].setdefault("early_stopping_patience", config.get("early_stopping_patience", 3))
+    config["training"].setdefault("num_workers", config.get("num_workers", 2))
+
+    config.setdefault("output", {})
+    config["output"].setdefault("checkpoint_dir", config.get("output_dir", "artifacts/checkpoints"))
+    config["output"].setdefault("model_name", config.get("model_name", "model.pt"))
+
+    return config
 
 
 def train_one_epoch(
@@ -80,6 +100,7 @@ def main():
     train_loader, val_loader = get_dataloaders(
         data_dir=config["data"]["data_dir"],
         batch_size=config["training"]["batch_size"],
+        num_workers=config["training"].get("num_workers", 2),
     )
     optimizer = torch.optim.Adam(
         model.parameters(),
