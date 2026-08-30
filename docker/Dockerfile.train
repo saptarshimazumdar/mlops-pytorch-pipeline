@@ -1,0 +1,11 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+COPY requirements/train.txt /app/requirements/train.txt
+RUN pip install --no-cache-dir -r /app/requirements/train.txt
+
+COPY src/ /app/src/
+COPY configs/ /app/configs/
+
+CMD ["python", "/app/src/train.py"]

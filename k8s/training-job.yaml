@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pytorch-training
+  namespace: mlops-pytorch
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: train
+          image: pytorch-training:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: MODEL_DIR
+              value: /tmp/model
