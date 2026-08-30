@@ -14,16 +14,35 @@ This project is a production-style PyTorch image classification pipeline coverin
 
 ## Getting started
 
-1. Create a virtual environment and install dependencies.
-2. Run training with:
-   `python src/train.py`
-3. Start the serving API with:
-   `uvicorn src.serve:app --reload --port 8000`
-4. Build and deploy Docker images for training and inference via the Docker/Kubernetes manifests.
+This project uses Python 3.11.
+
+1. Create and activate a virtual environment:
+   ```bash
+   python3.11 -m venv .venv
+   source .venv/bin/activate
+   ```
+2. Install dependencies:
+   ```bash
+   python -m pip install --upgrade pip
+   python -m pip install -r requirements/train.txt
+   ```
+3. Run training with:
+   ```bash
+   python src/train.py
+   ```
+4. Run the model test:
+   ```bash
+   python -m pytest tests/test_model.py -q
+   ```
+5. Start the serving API with:
+   ```bash
+   python -m uvicorn src.serve:app --reload --port 8000
+   ```
+6. Build and deploy Docker images for training and inference via the Docker/Kubernetes manifests.
 
 ## Typical workflow
 
 - Update model architecture in `src/model.py`
 - Tune hyperparameters in `configs/training_config.yaml`
-- Run `pytest` locally or through CI
+- Run tests locally or through CI
 - Package, train, and serve the model in containers and Kubernetes
