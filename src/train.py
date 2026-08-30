@@ -6,8 +6,12 @@ import torch
 import torch.nn as nn
 import yaml
 
-from dataset import get_dataloaders
-from model import get_model
+try:
+    from .dataset import get_dataloaders
+    from .model import get_model
+except ImportError:  # pragma: no cover
+    from dataset import get_dataloaders
+    from model import get_model
 
 
 def load_config(config_path: str) -> dict:
